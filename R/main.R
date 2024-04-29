@@ -1,3 +1,5 @@
+devtools::create("/Users/beatrice/Library/Mobile Documents/com~apple~CloudDocs/Files/College/BMI 510; Biostatistics for ML/BMI510FinalProject/")
+
 # This project has a total of 20 points.
 #   -   The code for each function below is worth 1 point, with the exceptions of more complex
 #       standardizeNames (2 points) and downloadRedcapReport (3 points).
