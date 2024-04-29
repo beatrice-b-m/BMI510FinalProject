@@ -1,1 +1,2 @@
-# bmi510-final-project
+# BMI510 Final Project
+### Beatrice Brown-Mulry
