@@ -14,7 +14,7 @@ The original data with scaling and centering transformations reversed.
 If no scaling or centering has been done, the input data \code{x} is returned unchanged.
 }
 \description{
-This function reverts the scaling and centering transformations applied to data.
+This function reverts any scaling and centering transformations applied to data.
 It checks for attributes indicating scaling and centering transformations ('scaled:center'
 and 'scaled:scale') and applies the inverse operations to restore the original data values.
 }

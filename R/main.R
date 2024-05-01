@@ -102,7 +102,7 @@ survCurv = function(status, time) {
     ggplot2::geom_step() +
     ggplot2::labs(
       x = "Time",
-      y = "Estimated Survival Probability",
+      y = "Survival Probability",
       title = "Estimated Survival Over Time"
     ) +
     ggplot2::ylim(0.0, 1.0) +
@@ -118,7 +118,7 @@ survCurv = function(status, time) {
 
 #' Undo Scaling and Centering of Data
 #'
-#' This function reverts the scaling and centering transformations applied to data.
+#' This function reverts any scaling and centering transformations applied to data.
 #' It checks for attributes indicating scaling and centering transformations ('scaled:center'
 #' and 'scaled:scale') and applies the inverse operations to restore the original data values.
 #'
@@ -195,7 +195,7 @@ pcApprox = function(x, npc) {
   approx_x = pca_x %*% t(pca_rot)
 
   # unscale/uncenter the approximation
-  approx_x = (approx_x + center_factor) + scale_factor
+  approx_x = (approx_x * scale_factor) + center_factor
 
   return (approx_x)
 }
@@ -354,7 +354,7 @@ downloadRedcapReport = function(redcapTokenName, redcapUrl, redcapReportId) {
   # retrieve the redcapTokenName from environment variables
   redcap_token = Sys.getenv(redcapTokenName)
 
-  # format the formData
+  # format the form data
   formData = list(
     "token"=redcap_token,
     content='report',
