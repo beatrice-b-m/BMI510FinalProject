@@ -103,7 +103,7 @@ report_tibble = downloadRedcapReport(
 
 ## Installation
 
-This package can be installed from GitHub via the `devtools` R package.
+This package can be installed from GitHub using the `devtools` R package.
 
 ```R
 devtools::install_github("beatrice-b-m/BMI510FinalProject")
