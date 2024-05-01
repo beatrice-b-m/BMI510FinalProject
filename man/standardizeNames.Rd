@@ -23,7 +23,7 @@ It uses \code{janitor::make_clean_names} and \code{snakecase::to_any_case} to cl
 to the specified case format. The case format can be adjusted via the \code{target_case} parameter.
 }
 \examples{
-data = data.frame(`First name` = c("Alice", "Bob"), `Last.Name` = c("Smith", "Jones"))
+data = data.frame(`first name` = c("Alice", "Bob"), `Last.Name` = c("Smith", "Jones"))
 new_data = standardizeNames(data, target_case = "snake")
 
 }

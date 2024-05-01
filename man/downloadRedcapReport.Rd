@@ -22,8 +22,14 @@ This function downloads a specified report from a REDCap project using the REDCa
 The report is requested via POST request, retrieved in CSV format, and returned as a tibble.
 }
 \examples{
-# Assuming you have a REDCap token stored in an environment variable named "REDCAP_TOKEN"
-# and the REDCap instance URL is "https://redcap.example.com/api/", for a report with ID 12345:
-downloadRedcapReport("REDCAP_TOKEN", "https://redcap.example.com/api/", "12345")
+# Assuming you have a REDCap token stored in an
+# environment variable named "REDCAP_TOKEN" and
+# the REDCap instance URL is: "https://redcap.example.com/api/"
+# for a report with ID: 12345
+report_tibble = downloadRedcapReport(
+  "REDCAP_TOKEN",
+  "https://redcap.example.com/api/",
+  "12345"
+)
 
 }

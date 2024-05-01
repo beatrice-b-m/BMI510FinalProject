@@ -13,6 +13,21 @@
 # log(P(p|data))
 # Use a grid-based search with p in steps of 0.001.
 
+#' Calculate the Maximum Likelihood Estimate of Probability for a Bernoulli Distribution
+#'
+#' This function calculates the maximum likelihood estimate (MLE) of the probability parameter `p`
+#' for a Bernoulli distribution given a binary data vector. It searches across a grid of potential
+#' `p` values ranging from 0.001 to 0.999 in steps of 0.001.
+#'
+#' @param data A binary vector (0s and 1s) representing the trial outcomes.
+#'
+#' @return The value of `p` that maximizes the Bernoulli log-likelihood for the provided data.
+#'
+#' @examples
+#' sample_data = c(1, 0, 0, 0, 1, 1, 1)
+#' mle_p = logLikBernoulli(sample_data)
+#'
+#' @export
 logLikBernoulli = function(data) {
   # create a vector of values between 0.001 and 0.999 to test for p
   p_vec = seq(0.001, 0.999, by = 0.001)
@@ -41,30 +56,49 @@ logLikBernoulli = function(data) {
 # curve S(t) . Test your function on the dataset here:
 # (https://jlucasmckay.bmi.emory.edu/global/bmi510/Labs-Materials/survival.csv).
 
+
+#' Estimate and Plot a Survival Curve
+#'
+#' This function creates a survival curve based on status and time data provided. It first formats the data into a
+#' tibble, calculates cumulative events and censorships, and then computes the survival probability at each unique
+#' time unit. Finally, it plots the resulting survival curve using ggplot2.
+#'
+#' @param status A numeric vector where '1' indicates an event (e.g., death) and '0' indicates censoring.
+#' @param time A numeric vector representing the time at which each event or censoring occurred.
+#'
+#' @return A ggplot object displaying the estimated survival curve over time.
+#'
+#' @examples
+#' status_vector <- c(1, 0, 1, 0, 0, 1)
+#' time_vector <- c(5, 12, 15, 20, 22, 25)
+#' survival_plot = survCurv(status_vector, time_vector)
+#' print(survival_plot)
+#'
+#' @export
 survCurv = function(status, time) {
   # format the data into a tibble
   data = dplyr::tibble(status=status, time=time)
 
   # count the number of initial individuals
-  # assuming each person is accounted for
+  # assuming each person has one row
   init_n = nrow(data)
 
   # based on the s_t formula given here:
   # https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3059453/
   surv_data = data |>
-    arrange(time) |> # sort by time
-    mutate(cum_event = cumsum(status == 1)) |> # get the cum. sum of events
-    mutate(cum_censor = cumsum(status == 0)) |> # get the cum. sum of censors
-    mutate(time_unit = ceiling(time)) |> # round each time up to the nearest integer
-    group_by(time_unit) |> # group by rounded time units
-    summarise(
+    dplyr::arrange(time) |> # sort by time
+    dplyr::mutate(cum_event = cumsum(status == 1)) |> # get the cum. sum of events
+    dplyr::mutate(cum_censor = cumsum(status == 0)) |> # get the cum. sum of censors
+    dplyr::mutate(time_unit = ceiling(time)) |> # round each time up to the nearest integer
+    dplyr::group_by(time_unit) |> # group by rounded time units
+    dplyr::summarise(
       n_event = max(cum_event), # get the max cum. events per time unit
       n_censor = max(cum_censor) # get the max cum. censors per time unit
     ) |>
-    mutate(p_surv = (init_n - n_event) / init_n) # calculate the prob. of survival at each time step
+    dplyr::mutate(p_surv = (init_n - n_event) / init_n) # calculate the prob. of survival at each time step
 
   # plot the survival curve
-  ggplot2::ggplot(surv_data, ggplot2::aes(x=time_unit,y=p_surv)) +
+  survival_curve = ggplot2::ggplot(surv_data, ggplot2::aes(x=time_unit,y=p_surv)) +
     ggplot2::geom_step() +
     ggplot2::labs(
       x = "Time",
@@ -73,6 +107,8 @@ survCurv = function(status, time) {
     ) +
     ggplot2::ylim(0.0, 1.0) +
     ggplot2::geom_point()  # Add points at each time step
+
+  return(survival_curve)
 }
 
 # ----------------------------------------------------------------------------------------------
@@ -189,7 +225,7 @@ pcApprox = function(x, npc) {
 #' @return A dataframe or tibble with standardized column names.
 #'
 #' @examples
-#' data = data.frame(`First name` = c("Alice", "Bob"), `Last.Name` = c("Smith", "Jones"))
+#' data = data.frame(`first name` = c("Alice", "Bob"), `Last.Name` = c("Smith", "Jones"))
 #' new_data = standardizeNames(data, target_case = "snake")
 #'
 #' @export
@@ -222,7 +258,6 @@ standardizeNames = function(data, target_case="small_camel") {
 #' @return The ceiling of the calculated minimum sample size necessary to achieve the specified power
 #'         for the given significance level and effect size.
 #'
-#' @importFrom pwr pwr.t.test
 #' @examples
 #' # For a one-sample test
 #' x1 <- rnorm(100, 1, 1)
