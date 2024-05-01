@@ -4,6 +4,8 @@
 
 # documents
 *.pdf
+*.csv
+*.xlsx
 
 # Session Data files
 .RData
